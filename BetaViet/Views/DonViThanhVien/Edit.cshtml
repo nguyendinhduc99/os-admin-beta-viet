@@ -1,0 +1,154 @@
+﻿@model BetaViet.Models.DonViThanhVien
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Sửa</h1>
+
+<h4>Đơn vị thành viên</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedOn" />
+            <section id="vueApp">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <div class="editor">
+                        @Html.Raw(Model.Description)
+                    </div>
+                    <input type="hidden" asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Logo" class="control-label"></label>
+                    <input type="hidden" asp-for="Logo" class="form-control" />
+                    <img src="@Model.Logo" class="rounded" style=" width: 100px;">
+                    <input type="file" name="Logo1" class="form-control" />
+                    <span asp-validation-for="Logo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"></label>
+                    <input type="hidden" asp-for="Avatar" class="form-control" />
+                    <img src="@Model.Avatar" class="rounded" style=" width: 100px;">
+                    <input type="file" name="Avatar1" class="form-control" />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PropertiesJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="PropertiesJSON" class="form-control" />
+                    <div class="p-0 row">
+                        <aside class="col-3" v-for="(item,i) in properties">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item.name}}: <b>{{item.value}}</b>
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onPropertyRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="Tên" v-model="addingProperty.name">
+                        <input type="text" class="form-control" placeholder="Giá trị" v-model="addingProperty.value">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onPropertyAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PropertiesJSON" class="text-danger"></span>
+                </div>
+                <partial name="~/Views/Shared/_PartialSEO.cshtml" />
+            </section>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            ClassicEditor
+                .create(document.querySelector('.editor'), ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        $("[name=Description]").val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+        })
+    </script>
+
+    <script>
+
+        var app = new Vue({
+            el: '#vueApp',
+            data: {
+
+                addingProperty: {},
+                properties: @Html.Raw(Model.PropertiesJSON != null ? Model.PropertiesJSON : "[]"),
+
+            },
+            watch: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+
+
+                onPropertyAdded() {
+                    this.properties.push(this.addingProperty);
+                    this.addingProperty = {};
+
+                    $("[name=PropertiesJSON]").val(JSON.stringify(this.properties));
+                },
+                onPropertyRemoved(i) {
+                    this.properties.splice(i, 1);
+
+                    $("[name=PropertiesJSON]").val(JSON.stringify(this.properties));
+                },
+
+
+
+            },
+            mounted() {
+
+            }
+        })
+    </script>
+}

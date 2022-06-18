@@ -1,0 +1,314 @@
+﻿@*@section Scripts {*@
+    <script src="/lib/vue-multiselect/vue-multiselect.min.js"></script>
+    <link rel="stylesheet" href="/lib/vue-multiselect/vue-multiselect.min.css">
+
+    <script src="/lib/Vue.Draggable/Sortable.min.js"></script>
+    <script src="/lib/Vue.Draggable/vuedraggable.umd.min.js"></script>
+
+    <script>
+        let standardProperties = [
+            {
+                name: 'Chủ đầu tư',
+                value: ''
+            },
+            {
+                name: 'Đơn vị thực hiện',
+                value: ''
+            },
+            {
+                name: 'Năm thực hiện',
+                value: ''
+            }
+        ]
+
+        Vue.component('vue-multiselect', window.VueMultiselect.default)
+        Vue.component('vue-draggable', window.vuedraggable)
+        var app = new Vue({
+            el: '#vueApp',
+            data: {
+                addingAvatar: [],
+                avatars: [],
+                addingProperty: {},
+                properties: [...standardProperties],
+                addingFilter: {},
+                filters: [],
+                addingImageSection: {
+                    name: '',
+                    images: [],
+
+                    _addingImageFilter: {},
+                    _standardFilterValues: [],
+                    filters: [],
+
+                    _addingImage: '',
+                    _addingImageTitle: '',
+                    _addingImageDescription: ''
+                },
+                imageSections: [],
+
+                standardFilters: [],
+                standardFilterValues: []
+            },
+            watch: {
+                "addingFilter.name"(newVal, oldVal) {
+                    console.log('watch addingFilter.name: ', newVal);
+                    this.standardFilterValues = _.get(this.standardFilters.find(x => x.name == newVal), 'values', []);
+                }
+            },
+            computed: {
+                submittingImageSctions() {
+                    return this.imageSections.map(x => ({ name: x.name, filters: x.filters, images: x.images.map(y => ({ url: y.url, title: y.title, description: y.description, filters: y.filters })) }));
+                }
+            },
+            methods: {
+                async onAvatarAdded() {
+                    //$("#addingAvatar").prop("files")[0]
+                    for (let avatar of this.addingAvatar) {
+                        var upload = new Upload(avatar);
+                        try {
+                            let x = await upload.doUploadPromise();
+                            console.log(x);
+
+                            this.avatars.push(x);
+                            
+                        } catch (err) {
+                            console.log(err)
+                        }
+                        //upload.doUpload(x => {
+                        //    console.log(x);
+                        //    this.avatars.push(x);
+                        //    this.addingAvatar = [];
+                        //    $("#addingAvatar").val("");
+
+                        //    $("[name=AvatarsJSON]").val(JSON.stringify(this.avatars));
+                        //}, err => {
+                        //    console.log(err)
+                        //});
+                    }
+
+                    this.addingAvatar = [];
+                    $("#addingAvatar").val("");
+
+                    $("[name=AvatarsJSON]").val(JSON.stringify(this.avatars));
+                },
+                onAvatarRemoved(i) {
+                    this.avatars.splice(i, 1);
+
+                    $("[name=AvatarsJSON]").val(JSON.stringify(this.avatars));
+                },
+
+                onPropertyAdded() {
+                    if (!this.addingProperty.name.trim() || !this.addingProperty.value.trim()) {
+                        showNotification('Bạn nhập thiếu giá trị')
+                        return;
+                    }
+
+                    this.properties.push(this.addingProperty);
+                    this.addingProperty = {};
+
+                    this.storePropertyJSON();
+                    //$("[name=PropertiesJSON]").val(JSON.stringify(this.properties));
+                },
+                onPropertyRemoved(i) {
+                    this.properties.splice(i, 1);
+
+                    this.storePropertyJSON();
+                    //$("[name=PropertiesJSON]").val(JSON.stringify(this.properties));
+                },
+                storePropertyJSON() {
+                    $("[name=PropertiesJSON]").val(JSON.stringify(this.properties));
+                },
+
+                onFilterAdded() {
+                    if (!this.addingFilter.name.trim() || !this.addingFilter.value) {
+                        showNotification('Bạn nhập thiếu giá trị')
+                        return;
+                    }
+
+                    this.filters.push(this.addingFilter);
+                    this.addingFilter = {};
+
+                    $("[name=FiltersJSON]").val(JSON.stringify(this.filters));
+                },
+                onFilterRemoved(i) {
+                    this.filters.splice(i, 1);
+
+                    $("[name=FiltersJSON]").val(JSON.stringify(this.filters));
+                },
+
+                storeImageSectionJSON() {
+                    $("[name=ImageSectionsJSON]").val(JSON.stringify(this.submittingImageSctions));
+                },
+                onImageSectionAdded() {
+                    if (!this.addingImageSection.name.trim()) {
+                        showNotification('Bạn nhập thiếu giá trị')
+                        return;
+                    }
+                    if (typeof onImageSectionAddedFirstRow != 'undefined')
+                        this.imageSections.unshift(this.addingImageSection)
+                    else
+                        this.imageSections.push(this.addingImageSection);
+
+                    this.addingImageSection = {
+                        name: '',
+                        images: [],
+
+                        _addingImageFilter: {},
+                        _standardFilterValues: [],
+                        filters: [],
+
+                        _addingImage: '',
+                        _addingImageTitle: '',
+                        _addingImageDescription: ''
+                    }
+
+                    this.storeImageSectionJSON();
+                },
+                onImageSectionRemoved(i) {
+                    this.imageSections.splice(i, 1);
+
+                    this.storeImageSectionJSON();
+                },
+                async onImageAdded(item) {
+                    for (let avatar of item._addingImage) {
+                        var upload = new Upload(avatar);
+                        try {
+                            let x = await upload.doUploadPromise();
+                            console.log(x);
+
+                            item.images.push({
+                                url: x,
+                                title: item._addingImageTitle,
+                                description: item._addingImageDescription,
+                                filters: [],
+                            });
+
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }
+
+                    $(`#imageSections${item._addingIndex}`).val("");
+                    item._addingImage = [];
+                    item._addingImageTitle = '';
+                    item._addingImageDescription = '';
+                    item._addingIndex = '';
+
+                    this.storeImageSectionJSON();
+
+                    //var upload = new Upload(item._addingImage);
+                    //upload.doUpload(x => {
+                    //    console.log(x);
+                    //    item.images.push({
+                    //        url: x,
+                    //        title: item._addingImageTitle,
+                    //        description: item._addingImageDescription,
+                    //        filters: [],
+                    //        //_addingImageFilter: {},
+                    //        //_standardFilterValues: []
+                    //    });
+                    //    $(`#imageSections${item._addingIndex}`).val("");
+                    //    item._addingImage = '';
+                    //    item._addingImageTitle = '';
+                    //    item._addingImageDescription = '';
+                    //    item._addingIndex = '';
+
+                    //    this.storeImageSectionJSON();
+                    //}, err => {
+                    //    console.log(err)
+                    //});
+                },
+                onImageRemoved(i, item) {
+                    item.images.splice(i, 1);
+
+                    this.storeImageSectionJSON();
+                },
+                onImageSectionFilterChanged(img, e) {
+                    console.log('onImageFilterChanged ', img, e);
+                    img._standardFilterValues = _.get(this.standardFilters.find(x => x.name == img._addingImageFilter.name), 'values', []);
+                },
+                onImageSectionFilterAdded(img) {
+                    if (!img._addingImageFilter.name.trim() || !img._addingImageFilter.value.trim()) {
+                        showNotification('Bạn nhập thiếu giá trị')
+                        return;
+                    }
+
+                    img.filters.push(img._addingImageFilter);
+                    img._addingImageFilter = {};
+
+                    this.storeImageSectionJSON();
+                },
+                onImageSectionFilterRemoved(img, i) {
+                    img.filters.splice(i, 1);
+
+                    this.storeImageSectionJSON();
+                },
+                //onImageFilterChanged(img, e) {
+                //    console.log('onImageFilterChanged ', img, e);
+                //    img._standardFilterValues = _.get(this.standardFilters.find(x => x.name == img._addingImageFilter.name), 'values', []);
+                //},
+                //onImageFilterAdded(img) {
+                //    img.filters.push(img._addingImageFilter);
+                //    img._addingImageFilter = {};
+
+                //    $("[name=ImageSectionsJSON]").val(JSON.stringify(this.submittingImageSctions));
+                //},
+                //onImageFilterRemoved(img, i) {
+                //    img.filters.splice(i, 1);
+
+                //    $("[name=ImageSectionsJSON]").val(JSON.stringify(this.submittingImageSctions));
+                //},
+
+                handleFileChange(model, e) {
+                    let files = e.target.files;
+                    let file = e.target.files[0];
+                    console.log(model, e, file);
+                    this[model] = files;
+                },
+                handleFileImageSectionChange(model, i, e) {
+                    let files = e.target.files;
+                    let file = e.target.files[0];
+                    console.log(model, e, file);
+                    model._addingImage = files;
+                    model._addingIndex = i;
+                }
+            },
+            mounted() {
+                $.getJSON(`/api/boloc?page=${typeof trangBoLoc != 'undefined' ? trangBoLoc : 0}`).then(x => {
+                    console.log(x);
+                    this.standardFilters = x.map(y => ({
+                        name: y.name,
+                        values: [...y.values, ...(y.dropdownValues || [])]
+                    }));
+                })
+                if (typeof avatars != 'undefined') {
+                    this.avatars = avatars;
+                }
+                if (typeof properties != 'undefined') {
+                    this.properties = properties;
+                }
+                if (typeof filters != 'undefined') {
+                    this.filters = filters;
+                }
+                if (typeof imageSections != 'undefined') {
+                    console.log("adding imageSections")
+                    imageSections = imageSections.map(x => ({
+                        ...x,
+                        filters: x.filters || [],
+                        _addingImageFilter: {},
+                        _standardFilterValues: [],
+                        images: x.images.map(y => ({
+                            ...y,
+                            //_addingImageFilter: {},
+                            //_standardFilterValues: []
+                        }))
+                    }))
+                    for (let item of imageSections) {
+                        this.imageSections.push(item);
+                    }
+                }
+            }
+        })
+    </script>
+
+@*}*@

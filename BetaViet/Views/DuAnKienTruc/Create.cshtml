@@ -1,0 +1,361 @@
+﻿@model BetaViet.Models.DuAnKienTruc
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //var tienDoThiCongList = ViewData["tienDoThiCongList"] as List<TienDoThiCong>;
+}
+
+<h1>Tạo mới</h1>
+
+<h4>Dự án kiến trúc</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <section id="vueApp">
+                <partial name="~/Views/Shared/_PartiaKhuDoThi.cshtml" />
+
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProjectInfo" class="control-label"></label>
+                    <input asp-for="ProjectInfo" class="form-control" />
+                    <span asp-validation-for="ProjectInfo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdeaDescription" class="control-label"></label>
+                    <div class="editor"></div>
+                    <input type="hidden" asp-for="IdeaDescription" class="form-control" />
+                    <span asp-validation-for="IdeaDescription" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+            <label asp-for="TrangThaiDuAn" class="control-label"></label>
+            <select asp-for="TrangThaiDuAn" class="form-control">
+                <option value="0">Mới</option>
+                <option value="1">Đang thi công</option>
+                <option value="2">Đã xong</option>
+            </select>
+            <span asp-validation-for="TrangThaiDuAn" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TienDoThiCong" class="control-label"></label>
+            <select asp-for="TienDoThiCong" class="form-control">
+
+            </select>
+            <span asp-validation-for="TienDoThiCong" class="text-danger"></span>
+        </div>*@
+                <div class="form-group">
+                    <label asp-for="NhaThietKe" class="control-label"></label>
+                    <select asp-for="NhaThietKeId" class="form-control"></select>
+                    <span asp-validation-for="NhaThietKeId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AvatarsJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="AvatarsJSON" class="form-control" />
+
+                    <draggable :list="avatars"
+                               :disabled="false"
+                               class="p-0 row"
+                               ghost-class="ghost"
+                               @@end='$("[name=AvatarsJSON]").val(JSON.stringify(avatars))'>
+                        <aside class="col-3" v-for="(item,i) in avatars" :key="'avatar' + i">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <img :src="item" class="rounded" style=" width: 100px;">
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onAvatarRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </draggable>
+
+                    <div class="form-group input-group">
+                        <input type="hidden" class="form-control" placeholder="Ảnh" v-model="addingAvatar">
+                        <input type="file" multiple class="form-control" id="addingAvatar" @@change.stop="handleFileChange('addingAvatar', $event)">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onAvatarAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="AvatarsJSON" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PropertiesJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="PropertiesJSON" class="form-control" />
+
+                    <draggable :list="properties"
+                               :disabled="false"
+                               class="p-0 row"
+                               ghost-class="ghost"
+                               @@end='$("[name=PropertiesJSON]").val(JSON.stringify(properties))'>
+                        <aside class="col-3" v-for="(item,i) in properties">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item.name}}
+                                    @*: <b>{{item.value}}</b>*@
+                                    <input type="text" class="" placeholder="" v-model="item.value" @@keyup="storePropertyJSON">
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onPropertyRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </draggable>
+
+
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="Tên" v-model="addingProperty.name">
+                        <input type="text" class="form-control" placeholder="Giá trị" v-model="addingProperty.value">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onPropertyAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PropertiesJSON" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FiltersJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="FiltersJSON" class="form-control" />
+
+                    <draggable :list="filters"
+                               :disabled="false"
+                               class="p-0 row"
+                               ghost-class="ghost"
+                               @@end='$("[name=FiltersJSON]").val(JSON.stringify(filters))'>
+                        <aside class="col-3" v-for="(item,i) in filters">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item.name}}: <b>{{item.value}}</b>
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onFilterRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </draggable>
+
+
+                    <div class="form-group input-group" style="z-index: 5;">
+                        <select class="form-control w-50" v-model="addingFilter.name">
+                            <option v-for="x in standardFilters" :value="x.name">{{x.name}}</option>
+                        </select>
+                        @*<input type="text" class="form-control" placeholder="Tên" v-model="addingFilter.name">*@
+                        @*<select class="form-control" v-model="addingFilter.value">
+                    <option v-for="x in standardFilterValues" :value="x">{{x}}</option>
+                </select>*@
+                        <vue-multiselect v-model="addingFilter.value" tag-placeholder="Giá trị" placeholder="" :options="standardFilterValues" :multiple="true" :taggable="true"></vue-multiselect>
+                        @*<input type="text" class="form-control" placeholder="Giá trị" v-model="addingFilter.value">*@
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onFilterAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="FiltersJSON" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageSectionsJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="ImageSectionsJSON" class="form-control" />
+
+                    <draggable :list="imageSections"
+                               :disabled="false"
+                               class="p-0"
+                               ghost-class="ghost"
+                               @@end='$("[name=ImageSectionsJSON]").val(JSON.stringify(imageSections))'>
+                        <aside class="bg-light p-3 mb-3" v-for="(item,i) in imageSections">
+                            <div class="row" style=" position: sticky; top: 65px; z-index: 4;">
+                                <div class="col-6">
+                                    <div class="form-group input-group m-0">
+                                        <div class=" input-group-addon bg-white">
+                                            <button class="btn" @@click.prevent.stop="onImageSectionRemoved(i)">
+                                                <i class="ti-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control w-100 font-weight-bold"
+                                               placeholder="Tên nội dung" v-model="item.name"
+                                               @@keyup="storeImageSectionJSON">
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group input-group m-0" style="z-index: 5;">
+                                    <select class="form-control" v-model="item._addingImageFilter.name" @@change="onImageSectionFilterChanged(item, $event)">
+                                        <option v-for="x in standardFilters.filter(x => ['Thuộc tính','Loại phòng','Phong cách'].includes(x.name))" :value="x.name">{{x.name}}</option>
+                                    </select>
+                                    <select class="form-control" v-model="item._addingImageFilter.value">
+                                        <option v-for="x in item._standardFilterValues" :value="x">{{x}}</option>
+                                    </select>
+                                    <div class=" input-group-addon bg-white align-self-start">
+                                        <button class="btn" @@click.prevent.stop="onImageSectionFilterAdded(item)">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-0 row mb-3">
+                                <aside class="col-3" v-for="(f,i) in item.filters">
+                                    <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                        <span>
+                                            {{f.name}}: <b>{{f.value}}</b>
+                                        </span>
+                                        <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onImageSectionFilterRemoved(item, i)">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="row">
+                                <div class="col-4" v-for="(img,j) in item.images">
+                                    <div class="card">
+                                        <div class="card-media">
+                                            <img class="img-responsive" :src="img.url" alt="" style=" height: 250px; object-fit: cover; object-position: center;">
+                                            <button class="btn btn-sm m-0 p-0 px-1"
+                                                    style="position: absolute; top: 10px; right: 10px;"
+                                                    @@click.prevent.stop="onImageRemoved(j, item)">
+                                                <i class="ti-minus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-block p-1">
+                                            <h4 class="mb-2 no-mrg-top">
+                                                <input type="text" class="form-control w-100"
+                                                       placeholder="Tiêu đề ảnh" v-model="img.title"
+                                                       @@keyup="storeImageSectionJSON">
+                                            </h4>
+                                            <p>
+                                                <input type="text" class="form-control w-100"
+                                                       placeholder="Mô tả ảnh" v-model="img.description"
+                                                       @@keyup="storeImageSectionJSON">
+                                            </p>
+                                            @*<div class="p-0 row">
+                                        <aside class="col-6" v-for="(item,i) in img.filters">
+                                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                                <span>
+                                                    {{item.name}}: <b>{{item.value}}</b>
+                                                </span>
+                                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onImageFilterRemoved(img, i)">
+                                                    <i class="ti-minus"></i>
+                                                </button>
+                                            </div>
+                                        </aside>
+                                    </div>*@
+                                        </div>
+                                        @*<div class="card-footer border top p-0" style="min-height: initial;">
+                                    <div class="form-group input-group m-0" style="z-index: 5;">
+                                        <select class="form-control" v-model="img._addingImageFilter.name" @@change="onImageFilterChanged(img, $event)">
+                                            <option v-for="x in standardFilters" :value="x.name">{{x.name}}</option>
+                                        </select>
+                                        <select class="form-control" v-model="img._addingImageFilter.value">
+                                            <option v-for="x in img._standardFilterValues" :value="x">{{x}}</option>
+                                        </select>
+                                        <div class=" input-group-addon">
+                                            <button class="btn" @@click.prevent.stop="onImageFilterAdded(img)">
+                                                <i class="ti-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group input-group">
+                                        <input type="hidden" class="form-control" placeholder="Ảnh" v-model="item._addingImage">
+                                        <div style="flex: 1;">
+                                            <input type="file" multiple class="form-control overflow-hidden w-100" :id="'imageSections' + i"
+                                                   @@change.stop="handleFileImageSectionChange(item, i, $event)">
+                                            <input type="text" class="form-control w-100" placeholder="Tiêu đề ảnh" v-model="item._addingImageTitle">
+                                            <input type="text" class="form-control w-100" placeholder="Mô tả ảnh" v-model="item._addingImageDescription">
+                                        </div>
+                                        <div class="input-group-addon text-center d-flex justify-content-center">
+                                            <button class="btn" @@click.prevent.stop="onImageAdded(item)">
+                                                <i class="ti-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </draggable>
+
+
+                    <div class="form-group input-group mt-3">
+                        <input type="text" class="form-control" placeholder="Tên nội dung" v-model="addingImageSection.name">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onImageSectionAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ImageSectionsJSON" class="text-danger"></span>
+                </div>
+
+                <partial name="~/Views/Shared/_PartialSEO.cshtml" />
+            </section>
+
+            <partial name="~/Views/Shared/_CommonSlugVueAppPartial.cshtml" />
+
+            <div class="form-group">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            ClassicEditor
+                .create(document.querySelector('.editor'), ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        $("[name=IdeaDescription]").val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+
+            $.get("/api/tiendothicong?boloc=1").then(x => {
+                $("[name=TienDoThiCong]").append("<option></option>");
+                for (let item of x) {
+                    $("[name=TienDoThiCong]").append(`<option value="${item.value}">${item.value}</option>`);
+                }
+            })
+
+            $.get("/api/nhathietke").then(x => {
+                $("[name=NhaThietKeId]").append("<option></option>");
+                for (let item of x) {
+                    $("[name=NhaThietKeId]").append(`<option value="${item.id}">${item.name}</option>`);
+                }
+                $("[name=NhaThietKeId]").val($("[name=NhaThietKeId]").attr("data-val"));
+            });
+        })
+
+        let trangBoLoc = 1;
+        var linkPrefix = 'https://betaviet.com.vn/du-an-thiet-ke/kien-truc/'
+    </script>
+
+    @{await Html.RenderPartialAsync("_CommonDuAnVueAppPartial");}
+}

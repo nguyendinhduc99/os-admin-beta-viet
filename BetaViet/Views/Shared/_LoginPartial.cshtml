@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="user-profile dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            @*<img class="profile-img img-fluid" src="/template/starter/app/assets/images/user.jpg" alt="">*@
+            <div class="user-info">
+                <span class="name pdd-right-5">@User.Identity.Name</span>
+                <i class="ti-angle-down font-size-10"></i>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+            @*<li>
+                <a href="">
+                    <i class="ti-settings pdd-right-10"></i>
+                    <span>Setting</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="ti-user pdd-right-10"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="ti-email pdd-right-10"></i>
+                    <span>Inbox</span>
+                </a>
+            </li>
+            <li role="separator" class="divider"></li>*@
+            <li>
+                @*<form action="/Identity/Account/Logout" method="post">
+                    <button type="submit" class="btn btn-block m-0 bg-transparent text-left">
+                        <i class="ti-power-off pdd-right-10"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>*@
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                      asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                      method="post">
+                    <button type="submit" class="nav-link btn btn-link text-dark m-0"><i class="ti-power-off pdd-right-10"></i> Logout</button>
+                </form>
+                @*<a href="">
+            <i class="ti-power-off pdd-right-10"></i>
+            <span>Logout</span>
+        </a>*@
+            </li>
+        </ul>
+    </li>
+}
+else
+{
+    @*<li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>*@
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+
+

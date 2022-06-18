@@ -1,0 +1,93 @@
+﻿@model BetaViet.Models.TrangChuShowroom
+<form asp-action="Index">
+    <section id="vueApp">
+        <h3>TrangChuShowroom</h3>
+
+        <div class="form-group">
+            <label asp-for="ContentJSON" class="control-label"></label>
+            <input type="hidden" asp-for="ContentJSON" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <draggable :list="avatars"
+                       :disabled="false"
+                       class="p-0 row"
+                       ghost-class="ghost"
+                       @@end='$("[name=ContentJSON]").val(JSON.stringify(avatars))'>
+                <aside class="col-3" v-for="(item,i) in avatars" :key="'avatar' + i">
+                    <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                        <img :src="item.avatar" class="rounded" style=" width: 100px;">
+                        <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onAvatarRemoved(i)">
+                            <i class="ti-minus"></i>
+                        </button>
+                    </div>
+                    <h3>{{item.title}}</h3>
+                    <code>{{item.link}}</code>
+                    <div>{{item.content}}</div>
+                </aside>
+            </draggable>
+
+            <div class="">
+                <aside class="input-group">
+                    <input type="hidden" class="form-control" placeholder="Ảnh" v-model="addingAvatar">
+                    <div style="flex: 1;">
+                        <input type="text" class="form-control w-100" placeholder="Tiêu đề" v-model="addingAvatar.title">
+                    </div>
+                    <div class="input-group-addon text-center d-flex justify-content-center">
+                        <button class="btn" @@click.prevent.stop="onAvatarAdded">
+                            <i class="ti-plus"></i>
+                        </button>
+                    </div>
+                </aside>
+                <input type="text" class="form-control w-100" placeholder="Link" v-model="addingAvatar.link">
+                <textarea type="text" class="form-control w-100" placeholder="Mô tả" v-model="addingAvatar.content"></textarea>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </div>
+    </section>
+</form>
+@section Scripts {
+    <script src="/lib/Vue.Draggable/Sortable.min.js"></script>
+    <script src="/lib/Vue.Draggable/vuedraggable.umd.min.js"></script>
+    <script>
+        Vue.component('vue-draggable', window.vuedraggable)
+        var app = new Vue({
+            el: '#vueApp',
+            data: {
+                addingAvatar: [],
+                avatars: @Html.Raw(Model.ContentJSON != null ? JsonHelper.Serialize(Model.Content) : "[]"),
+                addingAvatar: {}
+            },
+            watch: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+                async onAvatarAdded() {
+
+          
+                            this.avatars.push(this.addingAvatar);
+
+             
+
+                    this.addingAvatar = {};
+                    $("#addingAvatar").val("");
+
+                    $("[name=ContentJSON]").val(JSON.stringify(this.avatars));
+                },
+                onAvatarRemoved(i) {
+                    this.avatars.splice(i, 1);
+
+                    $("[name=ContentJSON]").val(JSON.stringify(this.avatars));
+                },
+            },
+            mounted() {
+
+            }
+        })</script>
+}

@@ -1,0 +1,52 @@
+﻿@model BetaViet.Models.BoLoc
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Xóa</h1>
+
+<h3>Bạn có chắc bạn muốn xóa bản ghi này?</h3>
+<div>
+    <h4>Bộ lọc</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Values)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Values)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dropdown)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dropdown)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DropdownValues)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DropdownValues)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Page)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Page)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Quay lại danh sách</a>
+    </form>
+</div>

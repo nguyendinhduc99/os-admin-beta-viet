@@ -1,0 +1,175 @@
+﻿@model BetaViet.Models.KhuDoThi
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>KhuDoThi</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section id="vueApp">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" onblur="slugVueApp.onTitleBlur(event)" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"></label>
+                    <input type="file" name="Avatar1" class="form-control" />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <div class="editor"></div>
+                    <input type="hidden" asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PropertiesJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="PropertiesJSON" class="form-control" />
+
+                    <draggable :list="properties"
+                               :disabled="false"
+                               class="p-0 row"
+                               ghost-class="ghost"
+                               @@end='$("[name=PropertiesJSON]").val(JSON.stringify(properties))'>
+                        <aside class="col-3" v-for="(item,i) in properties">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item.name}}
+
+                                    <input type="text" class="" placeholder="" v-model="item.value" @@keyup="storePropertyJSON">
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onPropertyRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </draggable>
+
+
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="Tên" v-model="addingProperty.name">
+                        <input type="text" class="form-control" placeholder="Giá trị" v-model="addingProperty.value">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onPropertyAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PropertiesJSON" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FiltersJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="FiltersJSON" class="form-control" />
+
+                    <draggable :list="filters"
+                               :disabled="false"
+                               class="p-0 row"
+                               ghost-class="ghost"
+                               @@end='$("[name=FiltersJSON]").val(JSON.stringify(filters))'>
+                        <aside class="col-3" v-for="(item,i) in filters">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item.name}}: <b>{{item.value}}</b>
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onFilterRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </draggable>
+
+
+                    <div class="form-group input-group" style="z-index: 5;">
+                        <select class="form-control w-50" v-model="addingFilter.name">
+                            <option v-for="x in standardFilters" :value="x.name">{{x.name}}</option>
+                        </select>
+                        @*<input type="text" class="form-control" placeholder="Tên" v-model="addingFilter.name">*@
+                        @*<select class="form-control" v-model="addingFilter.value">
+                                <option v-for="x in standardFilterValues" :value="x">{{x}}</option>
+                            </select>*@
+                        <vue-multiselect v-model="addingFilter.value" tag-placeholder="Giá trị" placeholder="" :options="standardFilterValues" :multiple="true" :taggable="true"></vue-multiselect>
+                        @*<input type="text" class="form-control" placeholder="Giá trị" v-model="addingFilter.value">*@
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onFilterAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="FiltersJSON" class="text-danger"></span>
+                </div>
+                <partial name="~/Views/Shared/_PartialSEO.cshtml" />
+            </section>
+            <partial name="~/Views/Shared/_CommonSlugVueAppPartial.cshtml" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+    <script>$(document).ready(function () {
+
+            ClassicEditor
+                .create(document.querySelector('.editor'), ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        $("[name=Description]").val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+
+        })
+        let trangBoLoc = 12;
+        var linkPrefix = 'https://betaviet.com.vn/du-an-thi-cong/khu-do-thi/'</script>
+
+    @{await Html.RenderPartialAsync("_CommonDuAnVueAppPartial");}
+
+    <script>
+        let standardProperties1 = [
+            {
+                name: 'Thiết kế',
+                value: ''
+            },
+            {
+                name: 'Thi công',
+                value: ''
+            },
+            {
+                name: 'Vị trí',
+                value: ''
+            },
+        ]
+
+        app.properties = [...standardProperties1]
+
+    </script>
+}
+
+}

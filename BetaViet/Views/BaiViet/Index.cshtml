@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BetaViet.Models.BaiViet>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách</h1>
+
+<p>
+    <a asp-action="Create">Tạo mới</a>
+</p>
+<table class="table" id="dt-opt">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DanhMucBaiViet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Avatar)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.CreatedOn.GetValueOrDefault().FormatDateTime()
+            </td>
+            <td>
+                @item.ModifiedOn.GetValueOrDefault().FormatDateTime()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DanhMucBaiViet.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+                <div>
+                    <a href="https://betaviet.com.vn/xem-them/kien-thuc/@item.Slug" target="_blank">https://betaviet.com.vn/xem-them/kien-thuc/@item.Slug</a>
+                </div>
+            </td>
+            <td>
+                <img src="@item.Avatar" class="rounded" style=" width: 100px;">
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<BetaViet.Models.DoiThiCong>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách</h1>
+
+<p>
+    <a asp-action="Create">Tạo mới</a>
+</p>
+<table class="table" id="dt-opt">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Avatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertiesJSON)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FiltersJSON)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.ModifiedOn.GetValueOrDefault().FormatDateTime()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.Raw(item.Description)
+            </td>
+            <td>
+                <img src="@item.Avatar" class="rounded" style=" width: 100px;">
+            </td>
+            <td>
+                @foreach (var x in item.Properties)
+                {
+                    <p>
+                        <span>@x.Name</span>
+                        <b>@x.Value</b>
+                    </p>
+                }
+            </td>
+            <td>
+                @foreach (var x in item.Filters)
+                {
+                    <p>
+                        <span>@x.Name</span>
+                        <b>@string.Join(", ", x.Value)</b>
+                    </p>
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,91 @@
+﻿@model BetaViet.Models.KhuyenmaiNoiThat
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>KhuyenmaiNoiThat</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ModifiedOn" class="control-label"></label>
+                <input asp-for="ModifiedOn" class="form-control" />
+                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label"></label>
+                <input type="hidden" asp-for="Avatar" class="form-control" />
+                <img src="@Model.Avatar" class="rounded" style=" width: 100px;">
+                <input type="file" name="Avatar1" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <div class="editor">
+                    @Html.Raw(Model.Description)
+                </div>
+                <input type="hidden" asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Link" class="control-label"></label>
+                <input asp-for="Link" class="form-control" />
+                <span asp-validation-for="Link" class="text-danger"></span>
+            </div>
+            <partial name="~/Views/Shared/_PartialSEO.cshtml" />
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedOn" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            ClassicEditor
+                .create(document.querySelector('.editor'), ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        $("[name=Description]").val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+
+
+        })
+    </script>
+}

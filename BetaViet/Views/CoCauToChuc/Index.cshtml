@@ -1,0 +1,76 @@
+﻿@model BetaViet.Models.CoCauToChuc
+<form asp-action="Index">
+    <section id="vueApp">
+        <h3>CoCauToChuc</h3>
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Content" class="control-label"></label>
+            <div class="editor">@Html.Raw(Model.Content)</div>
+            <input type="hidden" asp-for="Content" class="form-control" />
+        </div>
+       
+
+    </section>
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Lưu" class="btn btn-primary" />
+    </div>
+</form>
+@section Scripts {
+    <script src="/lib/Vue.Draggable/Sortable.min.js"></script>
+    <script src="/lib/Vue.Draggable/vuedraggable.umd.min.js"></script>
+    <script>
+        Vue.component('vue-draggable', window.vuedraggable)
+        var app = new Vue({
+            el: '#vueApp',
+            data: {
+                
+            },
+            watch: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+                
+            },
+            mounted() {
+
+            }
+        })
+    </script>
+
+
+    <script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            for(let ele of document.querySelectorAll('.editor'))
+            ClassicEditor
+                .create(ele, ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        //$("[name=Description]").val(editor.getData());
+                        $(ele).siblings('input[type="hidden"]').val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+
+        })
+    </script>
+}

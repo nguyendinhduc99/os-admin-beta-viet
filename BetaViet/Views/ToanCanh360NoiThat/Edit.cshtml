@@ -1,0 +1,63 @@
+﻿@model BetaViet.Models.ToanCanh360NoiThat
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>ToanCanh360NoiThat</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ModifiedOn" class="control-label"></label>
+                <input asp-for="ModifiedOn" class="form-control" />
+                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label"></label>
+                <input type="hidden" asp-for="Avatar" class="form-control" />
+                <img src="@Model.Avatar" class="rounded" style=" width: 100px;">
+                <input type="file" name="Avatar1" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Anh360" class="control-label"></label>
+                <input type="hidden" asp-for="Anh360" class="form-control" />
+                <img src="@Model.Anh360" class="rounded" style=" width: 100px;">
+                <input type="file" name="Avatar2" class="form-control" />
+                <span asp-validation-for="Anh360" class="text-danger"></span>
+            </div>
+            <partial name="~/Views/Shared/_PartialSEO.cshtml" />
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedOn" />
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

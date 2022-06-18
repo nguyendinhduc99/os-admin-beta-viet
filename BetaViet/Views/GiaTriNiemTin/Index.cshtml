@@ -1,0 +1,272 @@
+﻿@model BetaViet.Models.GiaTriNiemTin
+<form asp-action="Index">
+    <section id="vueApp">
+        <h3>GiaTriNiemTin</h3>
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Content" class="control-label"></label>
+            <div class="editor">@Html.Raw(Model.Content)</div>
+            <input type="hidden" asp-for="Content" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="TamNhin" class="control-label"></label>
+            <div class="editor">@Html.Raw(Model.TamNhin)</div>
+            <input type="hidden" asp-for="TamNhin" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SuMenh" class="control-label"></label>
+            <div class="editor">@Html.Raw(Model.SuMenh)</div>
+            <input type="hidden" asp-for="SuMenh" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="GiaTriCotLoi" class="control-label"></label>
+            <div class="editor">@Html.Raw(Model.GiaTriCotLoi)</div>
+            <input type="hidden" asp-for="GiaTriCotLoi" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SanPhamDichVuCotLoi" class="control-label"></label>
+            <div class="editor">@Html.Raw(Model.SanPhamDichVuCotLoi)</div>
+            <input type="hidden" asp-for="SanPhamDichVuCotLoi" class="form-control" />
+        </div>
+        <hr />
+
+        <div class="form-group">
+            <label asp-for="NhaMaySanXuatJSON" class="control-label"></label>
+            <input type="hidden" asp-for="NhaMaySanXuatJSON" class="form-control" />
+
+            <draggable :list="avatars"
+                       :disabled="false"
+                       class="p-0 row"
+                       ghost-class="ghost"
+                       @@end='$("[name=NhaMaySanXuatJSON]").val(JSON.stringify(avatars))'>
+                <aside class="col-3" v-for="(item,i) in avatars" :key="'avatar' + i">
+                    <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                        <img :src="item" class="rounded" style=" width: 100px;">
+                        <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onAvatarRemoved(i)">
+                            <i class="ti-minus"></i>
+                        </button>
+                    </div>
+                </aside>
+            </draggable>
+
+            <div class="form-group input-group">
+                <input type="hidden" class="form-control" placeholder="Ảnh" v-model="addingAvatar">
+                <input type="file" multiple class="form-control" id="addingAvatar" @@change.stop="handleFileChange('addingAvatar', $event)">
+                <div class=" input-group-addon">
+                    <button class="btn" @@click.prevent.stop="onAvatarAdded">
+                        <i class="ti-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ShowroomJSON" class="control-label"></label>
+            <input type="hidden" asp-for="ShowroomJSON" class="form-control" />
+
+            <draggable :list="avatars2"
+                       :disabled="false"
+                       class="p-0 row"
+                       ghost-class="ghost"
+                       @@end='$("[name=ShowroomJSON]").val(JSON.stringify(avatars2))'>
+                <aside class="col-3" v-for="(item,i) in avatars2" :key="'avatar' + i">
+                    <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                        <img :src="item" class="rounded" style=" width: 100px;">
+                        <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onAvatarRemoved2(i)">
+                            <i class="ti-minus"></i>
+                        </button>
+                    </div>
+                </aside>
+            </draggable>
+
+            <div class="form-group input-group">
+                <input type="hidden" class="form-control" placeholder="Ảnh" v-model="addingAvatar2">
+                <input type="file" multiple class="form-control" id="addingAvatar2" @@change.stop="handleFileChange('addingAvatar2', $event)">
+                <div class=" input-group-addon">
+                    <button class="btn" @@click.prevent.stop="onAvatarAdded2">
+                        <i class="ti-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HoatDongSuKienJSON" class="control-label"></label>
+            <input type="hidden" asp-for="HoatDongSuKienJSON" class="form-control" />
+
+            <draggable :list="avatars3"
+                       :disabled="false"
+                       class="p-0 row"
+                       ghost-class="ghost"
+                       @@end='$("[name=ShowroomJSON]").val(JSON.stringify(avatars3))'>
+                <aside class="col-3" v-for="(item,i) in avatars3" :key="'avatar' + i">
+                    <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                        <img :src="item" class="rounded" style=" width: 100px;">
+                        <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onAvatarRemoved3(i)">
+                            <i class="ti-minus"></i>
+                        </button>
+                    </div>
+                </aside>
+            </draggable>
+
+            <div class="form-group input-group">
+                <input type="hidden" class="form-control" placeholder="Ảnh" v-model="addingAvatar3">
+                <input type="file" multiple class="form-control" id="addingAvatar3" @@change.stop="handleFileChange('addingAvatar3', $event)">
+                <div class=" input-group-addon">
+                    <button class="btn" @@click.prevent.stop="onAvatarAdded3">
+                        <i class="ti-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Lưu" class="btn btn-primary" />
+    </div>
+</form>
+@section Scripts {
+    <script src="/lib/Vue.Draggable/Sortable.min.js"></script>
+    <script src="/lib/Vue.Draggable/vuedraggable.umd.min.js"></script>
+    <script>
+        Vue.component('vue-draggable', window.vuedraggable)
+        var app = new Vue({
+            el: '#vueApp',
+            data: {
+                addingAvatar: [],
+                avatars: @Html.Raw(Model.NhaMaySanXuatJSON != null ? Model.NhaMaySanXuatJSON : "[]"),
+
+                addingAvatar2: [],
+                avatars2: @Html.Raw(Model.ShowroomJSON != null ? Model.ShowroomJSON : "[]"),
+
+                addingAvatar3: [],
+                avatars3: @Html.Raw(Model.HoatDongSuKienJSON != null ? Model.HoatDongSuKienJSON : "[]"),
+            },
+            watch: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+                async onAvatarAdded() {
+                    for (let avatar of this.addingAvatar) {
+                        var upload = new Upload(avatar);
+                        try {
+                            let x = await upload.doUploadPromise();
+                            console.log(x);
+
+                            this.avatars.push(x);
+
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }
+
+                    this.addingAvatar = [];
+                    $("#addingAvatar").val("");
+
+                    $("[name=NhaMaySanXuatJSON]").val(JSON.stringify(this.avatars));
+                },
+                onAvatarRemoved(i) {
+                    this.avatars.splice(i, 1);
+
+                    $("[name=NhaMaySanXuatJSON]").val(JSON.stringify(this.avatars));
+                },
+
+                async onAvatarAdded2() {
+                    for (let avatar of this.addingAvatar2) {
+                        var upload = new Upload(avatar);
+                        try {
+                            let x = await upload.doUploadPromise();
+                            console.log(x);
+
+                            this.avatars2.push(x);
+
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }
+
+                    this.addingAvatar2 = [];
+                    $("#addingAvatar2").val("");
+
+                    $("[name=ShowroomJSON]").val(JSON.stringify(this.avatars2));
+                },
+                onAvatarRemoved2(i) {
+                    this.avatars2.splice(i, 1);
+
+                    $("[name=ShowroomJSON]").val(JSON.stringify(this.avatars2));
+                },
+
+                async onAvatarAdded3() {
+                    for (let avatar of this.addingAvatar3) {
+                        var upload = new Upload(avatar);
+                        try {
+                            let x = await upload.doUploadPromise();
+                            console.log(x);
+
+                            this.avatars3.push(x);
+
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }
+
+                    this.addingAvatar3 = [];
+                    $("#addingAvatar3").val("");
+
+                    $("[name=HoatDongSuKienJSON]").val(JSON.stringify(this.avatars3));
+                },
+                onAvatarRemoved3(i) {
+                    this.avatars3.splice(i, 1);
+
+                    $("[name=HoatDongSuKienJSON]").val(JSON.stringify(this.avatars3));
+                },
+                handleFileChange(model, e) {
+                    let files = e.target.files;
+                    let file = e.target.files[0];
+                    console.log(model, e, file);
+                    this[model] = files;
+                },
+            },
+            mounted() {
+
+            }
+        })
+    </script>
+
+  
+    <script src = "~/lib/ckeditor5/build/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            for(let ele of document.querySelectorAll('.editor'))
+            ClassicEditor
+                .create(ele, ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        //$("[name=Description]").val(editor.getData());
+                        $(ele).siblings('input[type="hidden"]').val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+
+        })
+    </script>
+}

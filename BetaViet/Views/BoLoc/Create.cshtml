@@ -1,0 +1,149 @@
+﻿@model BetaViet.Models.BoLoc
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Tạo mới</h1>
+
+<h4>Bộ lọc</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section id="vueApp">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Order" class="control-label"></label>
+                    <input asp-for="Order" class="form-control" />
+                    <span asp-validation-for="Order" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValuesJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="ValuesJSON" class="form-control" />
+                    <div class="p-0 row">
+                        <aside class="col-3" v-for="(item,i) in values">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item}}
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onValueRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="" v-model="addingValue">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onValueAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ValuesJSON" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Dropdown" /> @Html.DisplayNameFor(model => model.Dropdown)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DropdownValuesJSON" class="control-label"></label>
+                    <input type="hidden" asp-for="DropdownValuesJSON" class="form-control" />
+                    <div class="p-0 row">
+                        <aside class="col-3" v-for="(item,i) in dropdownValues">
+                            <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                                <span>
+                                    {{item}}
+                                </span>
+                                <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onDropdownValueRemoved(i)">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="" v-model="addingDropdownValue">
+                        <div class=" input-group-addon">
+                            <button class="btn" @@click.prevent.stop="onDropdownValueAdded">
+                                <i class="ti-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="DropdownValuesJSON" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Page" class="control-label"></label>
+                    <select asp-for="Page" class="form-control">
+                        <option value="0">Dự án nội thất</option>
+                        <option value="1">Dự án kiến trúc</option>
+                        <option value="2">Nhà thiết kế</option>
+                        <option value="10">Đơn vị thiết kế</option>
+                        <option value="3">Đang thi công</option>
+                        <option value="9">Đội thi công</option>
+                        <option value="4">Dự án nội thất _ Xem theo phòng</option>
+                        <option value="11">LoiThe_ShowRoom_BoSuuTap</option>
+                        <option value="12">KhuDoThi</option>
+
+                    </select>
+                    <span asp-validation-for="Page" class="text-danger"></span>
+                </div>
+            </section>
+
+            <div class="form-group">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    var app = new Vue({
+        el: '#vueApp',
+        data: {
+            addingValue: '',
+            values: [],
+            addingDropdownValue: '',
+            dropdownValues: []
+        },
+        methods: {
+            onValueAdded() {
+                this.values.push(this.addingValue);
+                this.addingValue = '';
+
+                $("[name=ValuesJSON]").val(JSON.stringify(this.values));
+            },
+            onValueRemoved(i) {
+                this.values.splice(i, 1);
+
+                $("[name=ValuesJSON]").val(JSON.stringify(this.values));
+            },
+            onDropdownValueAdded() {
+                this.dropdownValues.push(this.addingDropdownValue);
+                this.addingDropdownValue = '';
+
+                $("[name=DropdownValuesJSON]").val(JSON.stringify(this.dropdownValues));
+            },
+            onDropdownValueRemoved(i) {
+                this.dropdownValues.splice(i, 1);
+
+                $("[name=DropdownValuesJSON]").val(JSON.stringify(this.dropdownValues));
+            },
+        }
+    })
+</script>
+}

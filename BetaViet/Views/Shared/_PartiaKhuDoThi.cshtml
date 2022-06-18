@@ -1,0 +1,23 @@
+﻿@model BetaViet.Models.DuAnCommon
+
+<div class="form-group">
+    <label asp-for="KhuDoThi" class="control-label"></label>
+    <select asp-for="KhuDoThi" class="form-control" data-val="@(Model != null ? Model.KhuDoThi : string.Empty)">
+    </select>
+    <span asp-validation-for="KhuDoThi" class="text-danger"></span>
+</div>
+
+@*@section Scripts {*@
+<script src="/template/starter/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.get("/api/KhuDoThi").then(x => {
+            $("[name=KhuDoThi]").append("<option></option>");
+            for (let item of x) {
+                $("[name=KhuDoThi]").append(`<option value="${item.slug}">${item.name}</option>`);
+            }
+            $("[name=KhuDoThi]").val($("[name=KhuDoThi]").attr("data-val"));
+        });
+    })
+</script>
+@*  }*@

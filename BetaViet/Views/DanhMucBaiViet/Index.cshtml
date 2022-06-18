@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BetaViet.Models.DanhMucBaiViet>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách</h1>
+
+<p>
+    <a asp-action="Create">Tạo mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SEOTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SEODescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SEOText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Slug)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SEOTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SEODescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SEOText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

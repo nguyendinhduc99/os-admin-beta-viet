@@ -1,0 +1,80 @@
+﻿<script>
+    var app = new Vue({
+        el: '#vueApp2',
+        data: {
+            addingDoiThiCong: '',
+            doiThiCongs: [],
+            thietKes: [],
+            addingThietKe: {}
+        },
+        watch: {
+
+        },
+        computed: {
+
+        },
+        methods: {
+
+            onDoiThiCongAdded() {
+                if (!this.addingDoiThiCong) {
+                    showNotification('Bạn nhập thiếu giá trị')
+                    return;
+                }
+                let existing = doiThiCong.find(x => x.id == this.addingDoiThiCong)
+                if (!this.doiThiCongs.find(x => x.id == this.addingDoiThiCong))
+                    this.doiThiCongs.push({ id: existing.id, name: existing.name });
+                this.addingDoiThiCong = '';
+
+                this.storeDoiThiCongJSON();
+            },
+            onDoiThiCongRemoved(i) {
+                this.doiThiCongs.splice(i, 1);
+
+                this.storeDoiThiCongJSON();
+            },
+            storeDoiThiCongJSON() {
+                $("[name=DoiThiCongJSON]").val(JSON.stringify(this.doiThiCongs));
+            },
+
+            onThietKeAdded() {
+                if (!this.addingThietKe.donViThietKeId || !this.addingThietKe.nhaThietKeId) {
+                    showNotification('Bạn nhập thiếu giá trị')
+                    return;
+                }
+
+                let existing = donViThietKe.find(x => x.id == this.addingThietKe.donViThietKeId)
+                let existing2 = nhaThietKe.find(x => x.id == this.addingThietKe.nhaThietKeId)
+
+                if (!this.thietKes.find(x => x.donViThietKeId == this.addingThietKe.donViThietKeId)
+                    && !this.thietKes.find(x => x.nhaThietKeId == this.addingThietKe.nhaThietKeId))
+                    this.thietKes.push({
+                        donViThietKeId: existing.id, donViThietKeName: existing.name,
+                        nhaThietKeId: existing2.id, nhaThietKeName: existing2.name
+                    })
+
+                this.addingDoiThiCong = {};
+
+                this.storeThietKeJSON();
+            },
+            onThietKeRemoved(i) {
+                this.thietKes.splice(i, 1);
+
+                this.storeThietKeJSON();
+            },
+            storeThietKeJSON() {
+                $("[name=ThietKeJSON]").val(JSON.stringify(this.thietKes));
+            },
+
+
+        },
+        mounted() {
+
+            if (typeof doiThiCongs != 'undefined') {
+                this.doiThiCongs = doiThiCongs;
+            }
+            if (typeof thietKes != 'undefined') {
+                this.thietKes = thietKes;
+            }
+        }
+    })
+</script>

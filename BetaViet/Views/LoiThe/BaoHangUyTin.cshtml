@@ -1,0 +1,153 @@
+﻿@model BetaViet.Models.LoiThe_BaoHangUyTin
+
+<form asp-action="BaoHangUyTin">
+    <section id="vueApp">
+        <h3>LoiThe_BaoHangUyTin</h3>
+
+        <section id="vueApp">
+
+            <div class="form-group">
+                <label asp-for="BannersJSON" class="control-label"></label>
+                <input type="hidden" asp-for="BannersJSON" class="form-control" />
+
+                <draggable :list="avatars"
+                           :disabled="false"
+                           class="p-0 row"
+                           ghost-class="ghost"
+                           @@end='$("[name=BannersJSON]").val(JSON.stringify(avatars))'>
+                    <aside class="col-3" v-for="(item,i) in avatars" :key="'avatar' + i">
+                        <div class="d-flex align-items-center justify-content-between mb-1 badge badge-secondary">
+                            <img :src="item.image" class="rounded" style=" width: 100%; height: 100px;">
+                            <button class="btn btn-sm m-0 p-0 px-1" @@click.prevent.stop="onAvatarRemoved(i)">
+                                <i class="ti-minus"></i>
+                            </button>
+                        </div>
+                    </aside>
+                </draggable>
+
+                <div class="form-group input-group">
+                    <input type="hidden" class="form-control" placeholder="Ảnh" v-model="addingAvatar.image">
+                    <input type="file" multiple class="form-control" id="addingAvatar" @@change.stop="handleFileChange('addingAvatar', $event)">
+                    <div class=" input-group-addon">
+                        <button class="btn" @@click.prevent.stop="onAvatarAdded">
+                            <i class="ti-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <span asp-validation-for="BannersJSON" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContentJSON" class="control-label"></label>
+                <input type="hidden" asp-for="ContentJSON" class="form-control" />
+
+                <draggable :list="imageSections"
+                           :disabled="false"
+                           class="p-0"
+                           ghost-class="ghost"
+                           @@end='$("[name=ContentJSON]").val(JSON.stringify(imageSections))'>
+                    <aside class="bg-light p-3 mb-3" v-for="(item,i) in imageSections">
+                        <div class="row" style=" position: sticky; top: 65px; z-index: 4;">
+                            <div class="col-12">
+                                <div class="form-group input-group m-0">
+                                    <div class=" input-group-addon bg-white">
+                                        <button class="btn" @@click.prevent.stop="onImageSectionRemoved(i)">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control w-100 font-weight-bold"
+                                           placeholder="Tên nội dung" v-model="item.title"
+                                           @@keyup="storeImageSectionJSON">
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="text" class="form-control w-100" placeholder="Tiêu đề phụ" v-model="item.subtitle" @@keyup="storeImageSectionJSON">
+                        <input type="text" class="form-control w-100" placeholder="Link ảnh" v-model="item.image" @@keyup="storeImageSectionJSON">
+                        <br />
+                        <div class="row">
+                            <div class="col-4" v-for="(img,j) in item.content">
+                                <div class="card">
+                                    <div class="card-media">
+                                        <img class="img-responsive" :src="img.url" alt="" style=" height: 50px; object-fit: cover; object-position: center;">
+                                        <button class="btn btn-sm m-0 p-0 px-1"
+                                                style="position: absolute; top: 10px; right: 10px;"
+                                                @@click.prevent.stop="onImageRemoved(j, item)">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-block p-1">
+                                        <h4 class="mb-2 no-mrg-top">
+                                            <input type="text" class="form-control w-100"
+                                                   placeholder="Tiêu đề chính" v-model="img.title"
+                                                   @@keyup="storeImageSectionJSON">
+                                        </h4>
+                                        <p>
+                                            <input type="text" class="form-control w-100"
+                                                   placeholder="Tiêu đề phụ" v-model="img.subtitle"
+                                                   @@keyup="storeImageSectionJSON">
+                                        </p>
+                                        <p>
+                                            <input type="text" class="form-control w-100"
+                                                   placeholder="ảnh" v-model="img.image"
+                                                   @@keyup="storeImageSectionJSON">
+                                        </p>
+                                        <p>
+                                            <input type="text" class="form-control w-100"
+                                                   placeholder="liên kết" v-model="img.link"
+                                                   @@keyup="storeImageSectionJSON">
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group input-group">
+                                    <input type="hidden" class="form-control" placeholder="Ảnh" v-model="item._addingImage">
+                                    <div style="flex: 1;">
+                                        @*<input type="file" multiple class="form-control overflow-hidden w-100" :id="'imageSections' + i"
+                                            @@change.stop="handleFileImageSectionChange(item, i, $event)">*@
+                                        <input type="text" class="form-control w-100" placeholder="Tiêu đề chính" v-model="item._addingImageTitle">
+                                        <input type="text" class="form-control w-100" placeholder="Tiêu đề phụ" v-model="item._addingImageSubtitle">
+                                        <input type="text" class="form-control w-100" placeholder="ảnh" v-model="item._addingImageImage">
+                                        <input type="text" class="form-control w-100" placeholder="Liên kết " v-model="item._addingImageLink">
+                                    </div>
+                                    <div class="input-group-addon text-center d-flex justify-content-center">
+                                        <button class="btn" @@click.prevent.stop="onImageAdded(item)">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </draggable>
+
+
+                <div class="form-group input-group mt-3">
+                    <input type="text" class="form-control" placeholder="Tên nội dung" v-model="addingImageSection.title">
+                    <div class=" input-group-addon">
+                        <button class="btn" @@click.prevent.stop="onImageSectionAdded">
+                            <i class="ti-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <span asp-validation-for="ContentJSON" class="text-danger"></span>
+            </div>
+        </section>
+
+        <div class="form-group">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+        </div>
+    </section>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        let avatars = @Html.Raw(Model.BannersJSON != null ? Model.BannersJSON : "[]");
+    let imageSections = @Html.Raw(Model.ContentJSON != null ? Model.ContentJSON : "[]");
+    </script>
+    @{await Html.RenderPartialAsync("_CommonLoiTheVueAppPartial");}
+
+}

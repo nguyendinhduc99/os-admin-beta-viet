@@ -1,0 +1,573 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>@ViewData["Title"] - BetaViet</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- plugins css -->
+    <link rel="stylesheet" href="/template/starter/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/template/starter/bower_components/PACE/themes/blue/pace-theme-minimal.css" />
+    <link rel="stylesheet" href="/template/starter/bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css" />
+
+    <!-- page plugins css -->
+    <link rel="stylesheet" href="/template/demo/bower_components/datatables/media/css/jquery.dataTables.css" />
+
+    <!-- core css -->
+    <link href="/template/starter/app/assets/css/ei-icon.css" rel="stylesheet">
+    <link href="/template/starter/app/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="/template/starter/app/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/template/starter/app/assets/css/animate.min.css" rel="stylesheet">
+    <link href="/template/demo/app/assets/css/app.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <div class="app">
+        <div class="layout">
+            <!-- Side Nav START -->
+            <div class="side-nav">
+                <div class="side-nav-inner">
+                    <div class="side-nav-logo">
+                        <a href="index.html">
+                            <div class="logo logo-dark" style="        background-image: url('/logo_full.png')"></div>
+                            <div class="logo logo-white" style="        background-image: url('/logo_full.png')"></div>
+                        </a>
+                        <div class="mobile-toggle side-nav-toggle">
+                            <a href="">
+                                <i class="ti-arrow-circle-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <ul class="side-nav-menu scrollable">
+                        <li class="nav-item">
+                            <a class="mrg-top-30" href="/">
+                                <span class="icon-holder">
+                                    <i class="ti-home"></i>
+                                </span>
+                                <span class="title">Trang chủ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="" href="/boloc">
+                                <span class="icon-holder">
+                                    <i class="ti-home"></i>
+                                </span>
+                                <span class="title">Bộ lọc</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="" href="/DichVuThiCong">
+                                <span class="icon-holder">
+                                    <i class="ti-home"></i>
+                                </span>
+                                <span class="title">Dịch vụ thi công</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-layout-media-overlay"></i>
+                                </span>
+                                <span class="title">Nội thất</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/duannoithat">
+                                        <span>Dự án thiết kế</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/KhuDoThi">
+                                        <span>Khu đô thị</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/ToanCanh360NoiThat">
+                                        <span>Toàn cảnh 360</span>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item dropdown">
+                    <a href="/KhuyenmaiNoiThat">
+                        <span>Khuyến mãi</span>
+                    </a>
+                </li>*@
+
+                                @*<li class="nav-item dropdown">
+                    <a href="javascript:void(0);">
+                        <span>item 2</span>
+                    </a>
+                </li>*@
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-layout-media-overlay"></i>
+                                </span>
+                                <span class="title">Kiến trúc</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/duankientruc">
+                                        <span>Dự án thiết kế</span>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item dropdown">
+                    <a href="/ToanCanh360KienTruc">
+                        <span>Toàn cảnh 360</span>
+                    </a>
+                </li>*@
+                                @*<li class="nav-item dropdown">
+                    <a href="/KhuyenmaiKienTruc">
+                        <span>Khuyến mãi</span>
+                    </a>
+                </li>*@
+
+                                @*<li class="nav-item dropdown">
+                    <a href="javascript:void(0);">
+                        <span>item 2</span>
+                    </a>
+                </li>*@
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-layout-media-overlay"></i>
+                                </span>
+                                <span class="title">Đang thi công</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/dangthicong">
+                                        <span>Danh sách</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/doithicong">
+                                        <span>Đội thi công</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-view-list-alt"></i>
+                                </span>
+                                <span class="title">Nhà thiết kế</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/nhathietke">
+                                        <span>Danh sách</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/donvithietke">
+                                        <span>Đơn vị thiết kế</span>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item dropdown">
+                    <a href="javascript:void(0);">
+                        <span>Level 1.1</span>
+                        <span class="arrow">
+                            <i class="ti-angle-right"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="javascript:void(0);">Level 2</a>
+                        </li>
+                    </ul>
+                </li>*@
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-view-list-alt"></i>
+                                </span>
+                                <span class="title">BetaViet TV</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/Videos">
+                                        <span>Danh sách</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-view-list-alt"></i>
+                                </span>
+                                <span class="title">Kiến thức</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/BaiViet">
+                                        <span>Danh sách</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-view-list-alt"></i>
+                                </span>
+                                <span class="title">Loi the</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/Main">
+                                        <span>Trang chính</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/QuyMoCongTy">
+                                        <span>Quy Mo Cong Ty</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/NangLucThietKe">
+                                        <span>Nang Luc Thiet Ke</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/NangLucThiCong">
+                                        <span>Nang Luc Thi Cong</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/ShowroomNoiThat">
+                                        <span>Showroom Noi That</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/NhaMaySanXuat">
+                                        <span>Nha May San Xuat</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/ChamSocKhachHang">
+                                        <span>Cham Soc Khach Hang</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/GiamSatNghiemNhat">
+                                        <span>Giam Sat Nghiem Ngat</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LoiThe/BaoHangUyTin">
+                                        <span>Bao Hang Uy Tin</span>
+                                    </a>
+                                </li>
+                                
+
+                                <li class="nav-item dropdown">
+                                    <a href="javascript:void(0);">
+                                        <span>Showroom</span>
+                                        <span class="arrow">
+                                            <i class="ti-angle-right"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/LoiThe_ShowRoom_BoSuuTap">Bo suu tap</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-view-list-alt"></i>
+                                </span>
+                                <span class="title">Về Betaviet</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/VeChungToi">
+                                        <span>Về chúng tôi</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/GiaTriNiemTin">
+                                        <span>Giá trị niềm tin</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LichSuPhatTrien">
+                                        <span>Lịch sử phát triển</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/DonViThanhVien">
+                                        <span>đơn vị thành viên</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/CoCauToChuc">
+                                        <span>Cơ cấu tổ chức</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/CamNhanKhachHang">
+                                        <span>Cảm nhận khách hàng</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/BaoChiNoi">
+                                        <span>Báo chí nói</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LanToaCongDong">
+                                        <span>Lan tỏa cộng động</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TuyenDung">
+                                        <span>Tuyển dụng</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/LienHe">
+                                        <span>Liên hệ</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#">
+                                <span class="icon-holder">
+                                    <i class="ti-view-list-alt"></i>
+                                </span>
+                                <span class="title">Cấu hình trang chủ</span>
+                                <span class="arrow">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="/AnhTrangChu">
+                                        <span class="title">Ảnh trang chủ</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuThongTin">
+                                        <span>Thông tin</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuMoTaDichVu">
+                                        <span>Mô tả dịch vụ</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuMoTaThiCong">
+                                        <span>Mô tả thi cong</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuThamKhaoThietKe">
+                                        <span>Tham khao thiet ke</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuDeXuatThietKe">
+                                        <span>De xuat thiet ke</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuHeThongBeta">
+                                        <span>He thong beta</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuThamQuanCongTrinh">
+                                        <span>Tham quan cong trinh</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuCongTyThanhVien">
+                                        <span>Cong ty thanh vien</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuVideoDuAn">
+                                        <span>Video du an</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuLoiTheNoiBat">
+                                        <span>Loi The Noi Bat</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuQuyTrinhThucHien">
+                                        <span>Quy trinh thuc hien</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuShowroom">
+                                        <span>Showroom</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuKienThuc">
+                                        <span>Kien Thuc</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="/TrangChuLienKet">
+                                        <span>Lien Ket</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="" href="/SEOTexts">
+                                <span class="icon-holder">
+                                    <i class="ti-home"></i>
+                                </span>
+                                <span class="title">SEO</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="" href="/FormDangKy">
+                                <span class="icon-holder">
+                                    <i class="ti-home"></i>
+                                </span>
+                                <span class="title">Form Đăng Ký</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Side Nav END -->
+            <!-- Page Container START -->
+            <div class="page-container">
+                <!-- Header START -->
+                <div class="header navbar">
+                    <div class="header-container">
+                        <ul class="nav-left">
+                            <li>
+                                <a class="side-nav-toggle" href="javascript:void(0);">
+                                    <i class="ti-view-grid"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav-right">
+                            <partial name="_LoginPartial" />
+
+
+                        </ul>
+                    </div>
+                </div>
+                <!-- Header END -->
+                <!-- Content Wrapper START -->
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <!-- Your content goes here -->
+                        <div class="page-title">
+                            @RenderSection("PageTitle", required: false)
+                        </div>
+                        <div class="card">
+                            <div class="card-block">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Content Wrapper END -->
+                <!-- Footer START -->
+                <footer class="content-footer">
+                    <div class="footer">
+                        <div class="copyright">
+                            <span>&copy; 2020 - BetaViet @*- <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@</span>
+                            @*<span class="go-right">
+                                    <a href="" class="text-gray mrg-right-15">Link 1</a>
+                                    <a href="" class="text-gray">Link 2</a>
+                                </span>*@
+                        </div>
+                    </div>
+                </footer>
+                <!-- Footer END -->
+
+            </div>
+            <!-- Page Container END -->
+
+        </div>
+    </div>
+
+    <!-- build:js assets/js/vendor.js -->
+    <!-- plugins js -->
+    <script src="/template/starter/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/template/starter/bower_components/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/template/starter/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/template/starter/bower_components/PACE/pace.min.js"></script>
+    <script src="/template/starter/bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+    <!-- endbuild -->
+    <!-- build:js assets/js/app.min.js -->
+    <!-- core js -->
+    <script src="/template/starter/app/assets/js/app.js"></script>
+    <!-- endbuild -->
+    <!-- Insert your dependencies here -->
+    <script src="~/lib/vuejs/vue.min.js"></script>
+    <script src="~/lib/lodash.js"></script>
+    <script src="~/lib/qs.min.js"></script>
+    <script src="~/lib/vuejs/axios.min.js"></script>
+    <script src="/template/demo/bower_components/noty/js/noty/packaged/jquery.noty.packaged.min.js"></script>
+
+    <!-- page plugins js -->
+    <script src="/template/demo/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/template/demo/bower_components/moment/moment.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.22/sorting/datetime-moment.js"></script>
+    <script>$.fn.dataTable.moment('DD/MM/YYYY HH:mm');</script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <script src="/template/demo/app/assets/js/table/data-table.js"></script>
+</body>
+</html>

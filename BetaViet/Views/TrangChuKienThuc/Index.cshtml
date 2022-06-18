@@ -1,0 +1,75 @@
+﻿@model BetaViet.Models.TrangChuKienThuc
+<form asp-action="Index">
+    <section id="vueApp">
+        <h3>TrangChuKienThuc</h3>
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Subtitle" class="control-label"></label>
+            <input asp-for="Subtitle" class="form-control" />
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+        </div>
+    </section>
+</form>
+@section Scripts {
+    <script src="/lib/Vue.Draggable/Sortable.min.js"></script>
+    <script src="/lib/Vue.Draggable/vuedraggable.umd.min.js"></script>
+    <script>
+        Vue.component('vue-draggable', window.vuedraggable)
+        var app = new Vue({
+            el: '#vueApp',
+            data: {
+                addingAvatar: "",
+                @*avatars: @Html.Raw(Model.ContentJSON != null ? JsonHelper.Serialize(Model.Content) : "[]"),*@
+            },
+            watch: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+                async onAvatarAdded() {
+
+                        var upload = new Upload(this.addingAvatar);
+                    try {
+                        
+                            if (this.addingAvatar.size) {
+                            let x = await upload.doUploadPromise();
+                            console.log(x);
+                            this.addingAvatar = x;
+                        }
+                            this.avatars.push(this.addingAvatar);
+
+                        } catch (err) {
+                            console.log(err)
+                        }
+
+
+                    this.addingAvatar = {};
+                    $("#addingAvatar").val("");
+
+                    $("[name=ContentJSON]").val(JSON.stringify(this.avatars));
+                },
+                onAvatarRemoved(i) {
+                    this.avatars.splice(i, 1);
+
+                    $("[name=ContentJSON]").val(JSON.stringify(this.avatars));
+                },
+                handleFileChange(model, e) {
+                    let files = e.target.files;
+                    let file = e.target.files[0];
+                    console.log(model, e, file);
+                    this[model] = file;
+                },
+            },
+            mounted() {
+
+            }
+        })</script>
+}

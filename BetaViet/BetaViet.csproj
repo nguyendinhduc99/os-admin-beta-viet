@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-BetaViet-83083A9A-FDF6-4A05-880A-F227309A056F</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20210105105620_addSEOText.cs" />
+    <Compile Remove="Data\Migrations\20210105105620_addSEOText.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210111034254_addSeoFieldsToEntities.cs" />
+    <Compile Remove="Data\Migrations\20210111034254_addSeoFieldsToEntities.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210127113723_addDoiThiCong.cs" />
+    <Compile Remove="Data\Migrations\20210127113723_addDoiThiCong.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210127113939_addDoiThiCong.cs" />
+    <Compile Remove="Data\Migrations\20210127113939_addDoiThiCong.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210205083735_addKhuyenMai.cs" />
+    <Compile Remove="Data\Migrations\20210205083735_addKhuyenMai.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210412154705_changeDangThiCong.cs" />
+    <Compile Remove="Data\Migrations\20210412154705_changeDangThiCong.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\VeChungToi\" />
+    <Folder Include="wwwroot\vebetaviet\" />
+    <Folder Include="Controllers\LoiThe\" />
+    <Folder Include="Views\LoiThe\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\vebetaviet\LoiThe_Main.json" />
+  </ItemGroup>
+</Project>

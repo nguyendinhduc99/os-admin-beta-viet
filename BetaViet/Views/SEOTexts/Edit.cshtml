@@ -1,0 +1,103 @@
+﻿@model BetaViet.Models.SEOText
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Sửa</h1>
+
+<h4>SEOText</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Page" class="control-label"></label>
+                <select asp-for="Page" class="form-control" data-val="@Model.Page">
+                </select>
+                <span asp-validation-for="Page" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <div class="editor">
+                    @Html.Raw(Model.Text)
+                </div>
+                <input type="hidden" asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/main-menu.js"></script>
+    <script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            ClassicEditor
+                .create(document.querySelector('.editor'), ckeditor5Options)
+                .then(editor => {
+                    window.editor = editor;
+
+                    editor.model.document.on('change', () => {
+                        console.log('the data has changed!');
+                        $("[name=Text]").val(editor.getData());
+                    });
+                    //editor.editing.view.document.on('keydown', (evt, data) => {
+                    //    console.log(data);
+
+                    //});
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: iydo686yl1oa-qrolc6ajm7ow');
+                    console.error(error);
+                });
+
+            $("[name=Page]").append("<option></option>");
+            for (let item of fontendMainMenu) {
+                $("[name=Page]").append(`<option value="${[item.path].join('')}">${[item.name].join('/')}</option>`);
+
+                if (item.children) {
+                    for (let c1 of item.children) {
+                        $("[name=Page]").append(`<option value="${[item.path, c1.path].join('')}">${[item.name, c1.name].join(' / ')}</option>`);
+
+                        if (c1.children) {
+                            for (let c2 of c1.children) {
+                                $("[name=Page]").append(`<option value="${[item.path, c1.path, c2.path].join('')}">${[item.name, c1.name, c2.name].join(' / ')}</option>`);
+                            }
+                        }
+                    }
+                }
+            }
+            $("[name=Page]").val($("[name=Page]").attr("data-val"));
+
+        })
+    </script>
+}

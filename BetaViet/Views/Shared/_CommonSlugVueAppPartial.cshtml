@@ -1,0 +1,83 @@
+﻿@model BetaViet.Models.BaseEntityWithSEoFields
+
+<div class="form-group" id="slugApp">
+    <label asp-for="Slug" class="control-label"></label>
+    <div style="position: relative;">
+        <input name="Slug" class="form-control" v-model="slug" :disabled="isLoading" @@blur="onSlugBlur" />
+        <i v-if="isSlugOk" class="fa fa-check-circle text-success" style="position: absolute; top: 30%; right: 20px;"></i>
+        <i v-if="isLoading" class="fa fa-spin fa-spinner" style="position: absolute; top: 30%; right: 20px;"></i>
+    </div>
+    <a :href="linkPrefix + slug" target="_blank">{{linkPrefix}}{{slug}}</a>
+    <span asp-validation-for="Slug" class="text-danger"></span>
+</div>
+@*@section Scripts {*@
+    
+<script>
+        var slugVueApp;
+        window.addEventListener('load', function () {
+            console.log('slug app')
+            slugVueApp = new Vue({
+                el: '#slugApp',
+                data: {
+                    slug: '@(Model != null ? Model.Slug : string.Empty)',
+                    originalSlug: '@(Model != null ? Model.Slug : string.Empty)',
+                    isLoading: false,
+                    isSlugOk: false,
+                    linkPrefix: (typeof linkPrefix != 'undefined' ? linkPrefix : '')
+                },
+                watch: {
+
+                },
+                computed: {
+
+                },
+                methods: {
+                    async onTitleBlur(e) {
+                        console.log(e, e.target.value)
+                        this.isLoading = true;
+                        this.isSlugOk = false;
+                        try {
+                            let resp = await axios.get(`/api/SEOTexts/get-slug?title=${e.target.value}`)
+                            console.log(resp)
+                            this.slug = resp.data;
+                            this.isSlugOk = true;
+                        } catch (e) {
+                            console.log(e)
+                        }
+                        this.isLoading = false;
+                    },
+                    async onSlugBlur(e) {
+                        console.log(e)
+
+                        if (this.slug == this.originalSlug) return;
+
+                        this.isLoading = true;
+                        this.isSlugOk = false;
+                        try {
+                            let resp = await axios.get(`/api/SEOTexts/check-slug?slug=${this.slug}`)
+                            console.log(resp)
+                            if (!resp.data) {
+                                this.isSlugOk = true;
+                            } else {
+                                this.isSlugOk = false;
+                            }
+                        } catch (e) {
+                            console.log(e)
+                        }
+                        this.isLoading = false;
+                    }
+                },
+                mounted() {
+
+                }
+            })
+
+            $("[name=Title]").on("blur", function (e) {
+                slugVueApp.onTitleBlur(event)
+            })
+            
+        });
+
+
+</script>
+@*}*@
