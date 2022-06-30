@@ -165,94 +165,94 @@ namespace BetaViet.Controllers
             return _context.DuAnNoiThat.Any(e => e.Id == id);
         }
 
-        //public async Task<IActionResult> _ChangeImageLinks()
-        //{
-        //    //var prefix = "https://localhost:44308/";
-        //    var prefix = "https://betaviet.com.vn:8082/";
+        public async Task<IActionResult> _ChangeImageLinks()
+        {
+           //var prefix = "https://localhost:44308/";
+           var prefix = "https://betaviet.com.vn:8082/";
 
-        //    foreach(var item in await _context.DuAnNoiThat.ToListAsync()) 
-        //    { 
+           foreach(var item in await _context.DuAnNoiThat.ToListAsync()) 
+           { 
     
-        //        var avatars = item.Avatars;
-        //        for(var i = 0; i < avatars.Length; i++)
-        //        {                    
-        //            var link = avatars[i];
-        //            var splits = link.Replace(prefix, "")
-        //                .Split("/");
-        //            var path = Path.Combine(splits[0..(splits.Length - 1)]);
-        //            var fileName = splits.Last();
-        //            var name = fileName.Split('.').First();
-        //            var extension = fileName.Split('.').Last();
+               var avatars = item.Avatars;
+               for(var i = 0; i < avatars.Length; i++)
+               {                    
+                   var link = avatars[i];
+                   var splits = link.Replace(prefix, "")
+                       .Split("/");
+                   var path = Path.Combine(splits[0..(splits.Length - 1)]);
+                   var fileName = splits.Last();
+                   var name = fileName.Split('.').First();
+                   var extension = fileName.Split('.').Last();
 
-        //            var newName = item.Slug + "-anh-dai-dien-" + i + "." + extension;
+                   var newName = item.Slug + "-anh-dai-dien-" + i + "." + extension;
 
-        //            Guid nameGuid;
-        //            if(Guid.TryParse(name, out nameGuid)) { 
-        //                var (oldPath, newPath) = FileService.RenameUploadFile(path, fileName, newName);
+                   Guid nameGuid;
+                   if(Guid.TryParse(name, out nameGuid)) { 
+                       var (oldPath, newPath) = FileService.RenameUploadFile(path, fileName, newName);
 
-        //                avatars[i] = $"{prefix}{newPath.Replace("\\", "/").Replace("wwwroot/", "")}";
-        //            }
-        //        }
-        //        item.Avatars = avatars;
+                       avatars[i] = $"{prefix}{newPath.Replace("\\", "/").Replace("wwwroot/", "")}";
+                   }
+               }
+               item.Avatars = avatars;
 
-        //        var imageSections = item.ImageSections;
-        //        for (var i = 0; i < imageSections.Length; i++)
-        //        {
-        //            var images = imageSections[i].Images;
+               var imageSections = item.ImageSections;
+               for (var i = 0; i < imageSections.Length; i++)
+               {
+                   var images = imageSections[i].Images;
 
-        //            for(var j = 0; j < images.Length; j++) { 
-        //                var link = images[j].Url;
-        //                var splits = link.Replace(prefix, "")
-        //                    .Split("/");
-        //                var path = Path.Combine(splits[0..(splits.Length - 1)]);
-        //                var fileName = splits.Last();
-        //                var name = fileName.Split('.').First();
-        //                var extension = fileName.Split('.').Last();
+                   for(var j = 0; j < images.Length; j++) { 
+                       var link = images[j].Url;
+                       var splits = link.Replace(prefix, "")
+                           .Split("/");
+                       var path = Path.Combine(splits[0..(splits.Length - 1)]);
+                       var fileName = splits.Last();
+                       var name = fileName.Split('.').First();
+                       var extension = fileName.Split('.').Last();
 
-        //                var newName = item.Slug + $"-{imageSections[i].Name.ToSlug()}-" + j + "." + extension;
+                       var newName = item.Slug + $"-{imageSections[i].Name.ToSlug()}-" + j + "." + extension;
 
-        //                Guid nameGuid;
-        //                if (Guid.TryParse(name, out nameGuid))
-        //                {
-        //                    var (oldPath, newPath) = FileService.RenameUploadFile(path, fileName, newName);
+                       Guid nameGuid;
+                       if (Guid.TryParse(name, out nameGuid))
+                       {
+                           var (oldPath, newPath) = FileService.RenameUploadFile(path, fileName, newName);
 
-        //                    images[j].Url = $"{prefix}{newPath.Replace("\\", "/").Replace("wwwroot/", "")}";
-        //                }
-        //            }
-        //        }
-        //        item.ImageSections = imageSections;
+                           images[j].Url = $"{prefix}{newPath.Replace("\\", "/").Replace("wwwroot/", "")}";
+                       }
+                   }
+               }
+               item.ImageSections = imageSections;
             
-        //        _context.DuAnNoiThat.Update(item);
+               _context.DuAnNoiThat.Update(item);
 
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    return Ok();
-        //}
+               await _context.SaveChangesAsync();
+           }
+           return Ok();
+        }
 
-        //public async Task<IActionResult> UpdateAllSlugs()
-        //{
-        //    var list = await _context.DuAnNoiThat.ToListAsync();
-        //    foreach(var item in list)
-        //    {
-        //        item.Slug = await _duAnService.GetSlug(item.Title);
+        public async Task<IActionResult> UpdateAllSlugs()
+        {
+           var list = await _context.DuAnNoiThat.ToListAsync();
+           foreach(var item in list)
+           {
+               item.Slug = await _duAnService.GetSlug(item.Title);
 
-        //    }
-        //    _context.DuAnNoiThat.UpdateRange(list);
-        //    await _context.SaveChangesAsync();
-        //    return View();
-        //}
+           }
+           _context.DuAnNoiThat.UpdateRange(list);
+           await _context.SaveChangesAsync();
+           return View();
+        }
 
-        //public async Task<IActionResult> RemoveRedundantDashInSlugs()
-        //{
-        //    var list = await _context.DuAnNoiThat.ToListAsync();
-        //    foreach (var item in list)
-        //    {
-        //        item.Slug = item.Slug.Replace("--", "-");
+        public async Task<IActionResult> RemoveRedundantDashInSlugs()
+        {
+           var list = await _context.DuAnNoiThat.ToListAsync();
+           foreach (var item in list)
+           {
+               item.Slug = item.Slug.Replace("--", "-");
 
-        //    }
-        //    _context.DuAnNoiThat.UpdateRange(list);
-        //    await _context.SaveChangesAsync();
-        //    return View();
-        //}
+           }
+           _context.DuAnNoiThat.UpdateRange(list);
+           await _context.SaveChangesAsync();
+           return View();
+        }
     }
 }
