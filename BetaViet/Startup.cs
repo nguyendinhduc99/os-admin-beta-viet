@@ -103,15 +103,16 @@ namespace BetaViet
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                OnPrepareResponse = ctx => {
-                    ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-                    ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
-                      "Origin, X-Requested-With, Content-Type, Accept");
-                },
+            // app.UseStaticFiles(new StaticFileOptions()
+            // {
+            //     OnPrepareResponse = ctx => {
+            //         ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+            //         ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
+            //           "Origin, X-Requested-With, Content-Type, Accept");
+            //     },
 
-            });
+            // });
+            app.UseStaticFiles();
 
             app.UseRouting();
 
