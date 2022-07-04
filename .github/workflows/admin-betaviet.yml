@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - master
+    schedule:
+    - cron: '0 1 * * *' # every night at 1 am UTC
 env:
   AZURE_WEBAPP_NAME: admin-betaviet
   AZURE_WEBAPP_PACKAGE_PATH: BetaViet\published
@@ -10,6 +12,13 @@ env:
   DOTNET_CORE_VERSION: 5.0.x
   WORKING_DIRECTORY: BetaViet
 jobs:
+  delete-artifacts:
+    runs-on: windows-latest
+    steps:
+      - uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: $
+          expire-in: 1days # Set this to 0 to delete all artifacts
   build:
     runs-on: windows-latest
     steps:
