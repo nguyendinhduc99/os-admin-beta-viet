@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "BetaViet20220702092243",
+      "defaultValue": "betaviet-admin",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
