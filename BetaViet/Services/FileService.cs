@@ -29,11 +29,12 @@ namespace BetaViet.Services
             string folderBase;
                 
             var dir = GetCreateMyFolder("wwwroot/uploads", out folderBase);
+            System.Diagnostics.Debug.WriteLine(dir);
 
 
             //var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
             //fileName = Guid.NewGuid().ToString() + extension; //Create a new Name 
-                                                                //for the file due to security reasons.
+            //for the file due to security reasons.
             fileName = file.FileName;
             filePath = Path.Combine(folderBase, fileName);
             var path = Path.Combine(Directory.GetCurrentDirectory(), filePath);
