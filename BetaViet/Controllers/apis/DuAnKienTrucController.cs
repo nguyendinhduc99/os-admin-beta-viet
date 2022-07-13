@@ -23,7 +23,7 @@ namespace BetaViet.Controllers.apis
 
         // GET: api/DuAnKienTruc
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<DuAnKienTruc>>> GetDuAnKienTruc(int skip = 0, int take = 1000)
+        public async Task<ActionResult<IEnumerable<DuAnKienTruc>>> GetDuAnKienTruc(int skip = 0, int take = 20)
         {
             var list = await _context.DuAnKienTruc
                 .OrderByDescending(x => x.ModifiedOn)
