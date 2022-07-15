@@ -26,7 +26,7 @@ namespace BetaViet.Controllers
         // GET: DuAnKienTruc
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.DuAnKienTruc.Include(d => d.NhaThietKe).OrderByDescending(x => x.CreatedOn);
+            var applicationDbContext = _context.DuAnKienTruc.Include(d => d.NhaThietKe).Skip(0).Take(10).OrderByDescending(x => x.CreatedOn);
             return View(await applicationDbContext.ToListAsync());
         }
 

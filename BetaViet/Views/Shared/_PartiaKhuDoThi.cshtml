@@ -11,7 +11,10 @@
 <script src="/template/starter/bower_components/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+        console.log('api')
         $.get("/api/KhuDoThi").then(x => {
+        console.log('api', x)
+            
             $("[name=KhuDoThi]").append("<option></option>");
             for (let item of x) {
                 $("[name=KhuDoThi]").append(`<option value="${item.slug}">${item.name}</option>`);

@@ -1,4 +1,5 @@
 {
     "appService.preDeployTask": "publish-release",
-    "appService.deploySubpath": "bin/Release/net6.0/publish"
+    "appService.deploySubpath": "bin/Release/net5.0/publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/70f82c12-dd68-4c7d-b2c7-9971bdf6a648/microsoft.web/sites/subscriptions/70f82c12-dd68-4c7d-b2c7-9971bdf6a648/resourceGroups/sv-near-asia_group/providers/Microsoft.Web/sites/betaviet-admin"
 }
